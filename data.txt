@@ -120,4 +120,7 @@ LEFT JOIN product_product p ON o.ordered_item = p.name
 LEFT JOIN account_billingaddress b ON o.user_id = b.user_id
 --WHERE b.state_abbrev IS NULL OR b.state_abbrev = ''
 --WHERE o.total_price / p.price > 1
---WHERE (o.paid_at IS NULL OR o.paid_at = '') AND o.paid_status = 0
+--WHERE (o.paid_at IS NULL OR o.paid_at = '') AND o.paid_status = 0+
+
+
+
