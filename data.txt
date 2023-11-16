@@ -64,7 +64,7 @@ ALTER TABLE account_billingaddress
 ADD state_abbrev TEXT;
 
 UPDATE account_billingaddress
-SET if len(state_abbrev) = 2;
+SET state_abbrev = state;
 
 %%sql
 
@@ -74,3 +74,50 @@ SET state_abbrev = (
     FROM states
     WHERE states.description = account_billingaddress.state_abbrev
 );
+
+
+%%sql
+
+SELECT *
+FROM account_billingaddress
+WHERE state_abbrev IS NULL OR state_abbrev = ''
+
+%%sql
+
+UPDATE account_billingaddress
+SET state_abbrev = 'NY'
+WHERE id = 33;
+
+
+%%sql
+
+ALTER TABLE product_product
+ADD price_usd NUMERIC;
+
+UPDATE product_product
+SET price_usd = ROUND(price * 0.011, 2)
+
+%%sql
+
+UPDATE account_ordermodel
+SET ordered_item = 'Computer Chairs'
+WHERE ordered_item = 'Computer Chair';
+
+%%sql
+
+CREATE VIEW order_analysis AS
+SELECT o.id, 
+    o.paid_status,
+    o.is_delivered, 
+    o.user_id, 
+    b.state_abbrev,
+    o.ordered_item, 
+    ROUND(p.price * 0.011, 2) as price_usd,
+    CAST(o.total_price / p.price AS INTEGER) AS units_ordered,
+    ROUND(o.total_price * 0.011, 2) as total_price_usd
+FROM account_ordermodel o
+LEFT JOIN product_product p ON o.ordered_item = p.name
+LEFT JOIN account_billingaddress b ON o.user_id = b.user_id
+--WHERE b.state_abbrev IS NULL OR b.state_abbrev = ''
+--WHERE o.total_price / p.price > 1
+--WHERE (o.paid_at IS NULL OR o.paid_at = '') AND o.paid_status = 0
