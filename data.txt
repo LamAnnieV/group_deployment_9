@@ -1,0 +1,76 @@
+
+
+%%sql
+CREATE TABLE states (
+   state TEXT,
+    description TEXT
+    );
+
+INSERT INTO states (description, state) VALUES ('alabama', 'AL');
+INSERT INTO states (description, state) VALUES ('alaska', 'AK');
+INSERT INTO states (description, state) VALUES ('arizona', 'AZ');
+INSERT INTO states (description, state) VALUES ('arkansas', 'AR');
+INSERT INTO states (description, state) VALUES ('california', 'CA');
+INSERT INTO states (description, state) VALUES ('colorado', 'CO');
+INSERT INTO states (description, state) VALUES ('connecticut', 'CT');
+INSERT INTO states (description, state) VALUES ('delaware', 'DE');
+INSERT INTO states (description, state) VALUES ('florida', 'FL');
+INSERT INTO states (description, state) VALUES ('georgia', 'GA');
+INSERT INTO states (description, state) VALUES ('hawaii', 'HI');
+INSERT INTO states (description, state) VALUES ('idaho', 'ID');
+INSERT INTO states (description, state) VALUES ('illinois', 'IL');
+INSERT INTO states (description, state) VALUES ('indiana', 'IN');
+INSERT INTO states (description, state) VALUES ('iowa', 'IA');
+INSERT INTO states (description, state) VALUES ('kansas', 'KS');
+INSERT INTO states (description, state) VALUES ('kentucky', 'KY');
+INSERT INTO states (description, state) VALUES ('louisiana', 'LA');
+INSERT INTO states (description, state) VALUES ('maine', 'ME');
+INSERT INTO states (description, state) VALUES ('maryland', 'MD');
+INSERT INTO states (description, state) VALUES ('massachusetts', 'MA');
+INSERT INTO states (description, state) VALUES ('michigan', 'MI');
+INSERT INTO states (description, state) VALUES ('minnesota', 'MN');
+INSERT INTO states (description, state) VALUES ('mississippi', 'MS');
+INSERT INTO states (description, state) VALUES ('missouri', 'MO');
+INSERT INTO states (description, state) VALUES ('montana', 'MT');
+INSERT INTO states (description, state) VALUES ('nebraska', 'NE');
+INSERT INTO states (description, state) VALUES ('nevada', 'NV');
+INSERT INTO states (description, state) VALUES ('new hampshire', 'NH');
+INSERT INTO states (description, state) VALUES ('new jersey', 'NJ');
+INSERT INTO states (description, state) VALUES ('new mexico', 'NM');
+INSERT INTO states (description, state) VALUES ('new york', 'NY');
+INSERT INTO states (description, state) VALUES ('north carolina', 'NC');
+INSERT INTO states (description, state) VALUES ('north dakota', 'ND');
+INSERT INTO states (description, state) VALUES ('ohio', 'OH');
+INSERT INTO states (description, state) VALUES ('oklahoma', 'OK');
+INSERT INTO states (description, state) VALUES ('oregon', 'OR');
+INSERT INTO states (description, state) VALUES ('pennsylvania', 'PA');
+INSERT INTO states (description, state) VALUES ('rhode island', 'RI');
+INSERT INTO states (description, state) VALUES ('south carolina', 'SC');
+INSERT INTO states (description, state) VALUES ('south dakota', 'SD');
+INSERT INTO states (description, state) VALUES ('tennessee', 'TN');
+INSERT INTO states (description, state) VALUES ('texas', 'TX');
+INSERT INTO states (description, state) VALUES ('utah', 'UT');
+INSERT INTO states (description, state) VALUES ('vermont', 'VT');
+INSERT INTO states (description, state) VALUES ('virginia', 'VA');
+INSERT INTO states (description, state) VALUES ('washington', 'WA');
+INSERT INTO states (description, state) VALUES ('west virginia', 'WV');
+INSERT INTO states (description, state) VALUES ('wisconsin', 'WI');
+INSERT INTO states (description, state) VALUES ('wyoming', 'WY');
+
+
+%%sql
+
+ALTER TABLE account_billingaddress
+ADD state_abbrev TEXT;
+
+UPDATE account_billingaddress
+SET if len(state_abbrev) = 2;
+
+%%sql
+
+UPDATE account_billingaddress
+SET state_abbrev = (
+    SELECT state
+    FROM states
+    WHERE states.description = account_billingaddress.state_abbrev
+);
